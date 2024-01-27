@@ -33,6 +33,7 @@ pub(crate) async fn get_user_by_options(
     app: Extension<Arc<AppState>>,
     Json(req): Json<GetUserByOptionsPayload>,
 ) -> Result<APIResponse<PageResponse<user::Model>>, String> {
+    tracing::debug!("get_user_by_options: {:?}", req);
     let conn = &app.pool;
     let users = AuthenticationService::get_user_by_options(req, conn).await;
     if let Ok(u) = users {

@@ -6,7 +6,7 @@ version = "0.1.0"
 # 服务器ip 端口
 address = "0.0.0.0:8001"
 # 开启压缩
-compress = true
+compress = false
 # 管理员账户
 admin_name = "admin"
 # 管理员密码

@@ -4,7 +4,7 @@ use axum::{
 };
 use axum_extra::routing::RouterExt;
 
-use crate::{finance, user};
+use crate::{board, finance, user};
 
 fn build_user_routes() -> Router {
     Router::new()
@@ -27,8 +27,12 @@ fn build_finance_routes() -> Router {
         .route_with_tsr("/bill/query", post(finance::controller::query_flow))
         .route_with_tsr("/bill/update", post(finance::controller::update_flow))
         .route_with_tsr("/bill/delete", post(finance::controller::delete_flow))
+        // get_budget_overview
+        .route_with_tsr("/overview", post(board::controller::get_budget_overview))
 }
 
 pub fn build_routes() -> Router {
-    Router::new().nest("/user", build_user_routes())
+    Router::new()
+        .nest("/user", build_user_routes())
+        .nest("/finance", build_finance_routes())
 }

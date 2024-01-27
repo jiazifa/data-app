@@ -53,7 +53,7 @@ pub async fn build_router(setting: &Setting) -> Router {
         .allow_methods(Any)
         .allow_origin(Any);
 
-    let router = Router::new().nest("/8bd86ee64", route::build_routes());
+    let router = route::build_routes();
 
     let router = match setting.web.compression.unwrap_or(false) {
         true => {
