@@ -42,14 +42,15 @@ export async function getUserByIdentifier(identifier: string) {
   return res;
 }
 
-export async function updateUserByIdentifier(
-  identifier: string,
-  req: CreateUserReq
-) {
+export interface UpdateUserReq extends CreateUserReq {
+  identifier: string;
+}
+
+export async function updateUserByIdentifier(req: UpdateUserReq) {
   const db = getDB();
   const res = await db.user.update({
     where: {
-      identifier,
+      identifier: req.identifier,
     },
     data: {
       userName: req.userName,

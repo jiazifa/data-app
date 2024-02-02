@@ -1,4 +1,4 @@
-import { CreateUserReq, updateUserByIdentifier } from "@/models/user";
+import { UpdateUserReq, updateUserByIdentifier } from "@/models/user";
 import { User } from "@/types/models";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,7 +6,7 @@ const handler = async (req: NextRequest) => {
   console.log(`[api] ${req.method} ${req.url} ${JSON.stringify(req.body)}`);
 
   // get request body
-  const data: CreateUserReq = await req.json();
+  const data: UpdateUserReq = await req.json();
   console.log(`[api] data: ${JSON.stringify(data)}`);
   const newUser = await updateUserByIdentifier(data);
   // cast to User type, make sure newUser is not null
