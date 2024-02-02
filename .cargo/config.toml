@@ -1,3 +1,0 @@
-[env]
-
-RUST_LOG = "debug,lib_core=debug,lib_utils=debug,web_api=debug"

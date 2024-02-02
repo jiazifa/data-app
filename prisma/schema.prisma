@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id         Int      @id @default(autoincrement())
+  identifier String   @unique
+  title      String
+  parentId   Int?
+  remark     String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([id, title])
+}
+
+model User {
+  // 用户id
+  id Int @id @default(autoincrement())
+
+  // 唯一标识符
+  identifier String    @unique
+  // 用户名
+  userName   String?
+  // 生日
+  birthday   DateTime?
+  // 邮箱
+  email      String?   @unique
+  // 手机号
+  phone      String?   @unique
+  // 头像
+  image      String?
+  // 性别
+  gender     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Bill {
+  id         Int    @id @default(autoincrement())
+  identifier String @unique // 用于标识账单的唯一标识符
+  title      String // 账单标题
+  moneyFen   Int // 金额，单位为分
+
+  budgetIdf String? // 预算id
+
+  inOrOut String? // 收入或支出
+  userIdf String? // 用户id
+
+  flowStatus String? // 流水状态, Unchecked, Checked, Archiver
+
+  payType   String? // 支付类型, Unkonwn, Alipay, Wechat, Cash, Other
+  payDetail String? // 支付详情
+
+  counterparty String? // 交易对方
+  orderId      String? // 订单号
+
+  productInfo String? // 商品信息
+  spendAt     DateTime? // 账单发生时间
+  remark      String? // 备注
+  sourceRaw   String? // 原始数据
+
+  isDeleted Boolean // 是否删除
+  createdAt DateTime // 创建时间
+}
