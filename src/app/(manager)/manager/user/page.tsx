@@ -9,16 +9,16 @@ import { UsersTable } from "@/components/Table/UserTable";
 import { modals } from '@mantine/modals';
 import { CreateUserForm } from "@/components/Form/CreateUserForm";
 import { User } from "@/types/models";
-import { CreateUserOptions, createUser, query_user_by_options, useUserList } from "@/service/user";
+import { CreateUserOptions, createUser, query_user_by_options, useUserList } from "@/server/user";
 
 const UserListPage = () => {
     const router = useRouter();
-    // const { data, error, mutate: userMutate } = useUserList();
-    // if (error) {
-    //     console.log(`获取用户列表失败：${error}`)
-    // }
+    const { data, error, mutate: userMutate } = useUserList();
+    if (error) {
+        console.log(`获取用户列表失败：${error}`)
+    }
 
-    // console.log(`获取用户列表成功：${JSON.stringify(data)}`)
+    console.log(`获取用户列表成功：${JSON.stringify(data)}`)
 
     const onAddUserAction = async (values: CreateUserOptions) => {
         try {
@@ -47,7 +47,7 @@ const UserListPage = () => {
             title: '删除用户',
             withCloseButton: true,
             onConfirm: () => {
-                console.log(`删除用户：${user.username} 暂时不可用`);
+                console.log(`删除用户：${user.userName} 暂时不可用`);
             },
             labels: { confirm: '确定', cancel: '取消' },
         })
@@ -63,11 +63,11 @@ const UserListPage = () => {
                 <Group justify="flex-end">
                     <Button onClick={onCreateUserModalAction}>创建用户</Button>
                 </Group>
-                {/* <UsersTable
+                <UsersTable
                     data={data?.data ?? []}
                     onDeleteUserAction={onDeleteUserAction}
                     onEditUserAction={onEditUserAction}
-                /> */}
+                />
             </PageContainer>
         </>
     );

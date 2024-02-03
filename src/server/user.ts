@@ -22,8 +22,15 @@ export interface GetUserOptions {
 const query_user_by_options = async (
   option?: GetUserOptions
 ): Promise<PageResponse<User>> => {
-  return await POSTFetcher("/api/backend/user/query", {
-    payload: option ?? {},
+  const opt = { page: { skip: 0, take: 10 }, ...option };
+  if (option && option.page) {
+    opt.page = {
+      skip: (option.page.page - 1) * option.page.page_size,
+      take: option.page.page_size,
+    };
+  }
+  return await POSTFetcher("/api/user/query", {
+    opt,
   });
 };
 
@@ -38,7 +45,7 @@ export interface UpdateUserOptions {
 
 // update user
 const updateUser = async (user: UpdateUserOptions): Promise<User> => {
-  return await POSTFetcher("api/backend/user/update", { payload: user });
+  return await POSTFetcher("/api/user/update", { payload: user });
 };
 
 export interface GetUserIsExistsPayload {

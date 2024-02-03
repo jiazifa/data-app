@@ -1,5 +1,5 @@
 
-import { CreateUserOptions } from "@/service/user";
+import { CreateUserOptions } from "@/server/user";
 import { Gender } from "@/types/models";
 import { Button, Container, Group, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";

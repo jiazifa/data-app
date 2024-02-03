@@ -63,3 +63,24 @@ export async function updateUserByIdentifier(req: UpdateUserReq) {
   });
   return res;
 }
+
+export type QueryUserOptions = {
+  identifiers?: string[];
+  page?: {
+    skip: number;
+    take: number;
+  };
+};
+
+export async function query_user_by_options(option?: QueryUserOptions) {
+  const db = getDB();
+  const res = await db.user.findMany({
+    where: option?.identifiers && {
+      identifier: {
+        in: option?.identifiers,
+      },
+    },
+    ...option?.page,
+  });
+  return res;
+}
