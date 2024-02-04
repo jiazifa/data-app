@@ -1,7 +1,7 @@
 'use client';
 
-import { CreateOrUpdateFlowOptions, createBudget, getCSVContent, parseCSV, useBudgetList } from "@/server/finance";
-import { FlowStatus, FlowInOrOut, PayType, User, Budget } from "@/types/models";
+import { createBudget, getCSVContent, parseCSV, useBudgetList } from "@/server/finance";
+import { FlowStatus, FlowInOrOut, PayType, User, Budget } from "@/types";
 import { Box, Button, Container, Group, Stepper, Text, rem } from "@mantine/core";
 import { Dropzone } from '@mantine/dropzone';
 import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
@@ -30,7 +30,7 @@ const NextTitleForStep = (step: Step): string => {
 const ImportBudgetForm: FC<ImportBudgetPageProps> = ({ onCompleted }: ImportBudgetPageProps) => {
     const [active, setActive] = useState<Step>(0);
 
-    const { data: budgetList, error: budgetError } = useBudgetList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
+    const { data: budgetList, error: budgetError } = useBudgetList(undefined, { page: 1, pageSize: Number.MAX_SAFE_INTEGER });
 
     const openRef = useRef<() => void>(null);
 

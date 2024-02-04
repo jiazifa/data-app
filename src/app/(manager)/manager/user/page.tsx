@@ -8,8 +8,8 @@ import { PageContainer } from "@/components/PageContainer/PageContainer";
 import { UsersTable } from "@/components/Table/UserTable";
 import { modals } from '@mantine/modals';
 import { CreateUserForm } from "@/components/Form/CreateUserForm";
-import { User } from "@/types/models";
-import { CreateUserOptions, createUser, query_user_by_options, useUserList } from "@/server/user";
+import { User } from "@/types";
+import { CreateUserOptions, createUser, useUserList } from "@/server/user";
 import { POSTFetcher } from "@/server/global/api";
 
 const UserListPage = () => {
