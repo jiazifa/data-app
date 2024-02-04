@@ -1,12 +1,12 @@
-import { Budget, Flow, FlowStatus, FlowInOrOut, PageRequest, PageResponse, PayType, BudgetWithMoney } from "@/types/models";
+import { Budget, Flow, FlowStatus, FlowInOrOut, PageRequest, PageResponse, PayType, BudgetWithMoney, CreateOrUpdateFlowReq, CreateOrUpdateBudgetReq, QueryBudgetPayload, QueryFlowPayload } from "@/types";
 
 import dayjs from "dayjs";
 import useSWR from "swr";
 
 import { POSTFetcher } from "./global/api";
 
-export function parseCSV2FlowOption(datas: { [key: string]: any }[], type: PayType, user_idf: string, budgets: Budget[]): CreateOrUpdateFlowOptions[] {
-    const flows: CreateOrUpdateFlowOptions[] = [];
+export function parseCSV2FlowOption(datas: { [key: string]: any }[], type: PayType, user_idf: string, budgets: Budget[]): CreateOrUpdateFlowReq[] {
+    const flows: CreateOrUpdateFlowReq[] = [];
     if (type === PayType.WECHAT) {
         // 交易时间,交易类型,交易对方,商品,收/支,金额(元),支付方式,当前状态,交易单号,商户单号,备注
         /*
@@ -17,7 +17,7 @@ export function parseCSV2FlowOption(datas: { [key: string]: any }[], type: PayTy
         "商户单号": "\"10001073012022081200588463773124\t\"", "备注": "/" }
         */
         for (const data of datas) {
-            const flow: CreateOrUpdateFlowOptions = {
+            const flow: CreateOrUpdateFlowReq = {
                 title: "",
                 user_idf: user_idf,
                 money_fen: 0,
@@ -77,7 +77,7 @@ export function parseCSV2FlowOption(datas: { [key: string]: any }[], type: PayTy
          "商家订单号":"\"T200P1978089349363082368\t\"","备注":"/"}
         */
         for (const data of datas) {
-            const flow: CreateOrUpdateFlowOptions = {
+            const flow: CreateOrUpdateFlowReq = {
                 title: data["商品说明"],
                 user_idf: user_idf,
                 money_fen: 0,
@@ -197,59 +197,26 @@ export function getCSVContent(raw: string): string {
 }
 
 
-export interface CreateOrUpdateBudgetOptions {
-    identifier?: string;
-    title: string;
-    parent_idf?: string;
-    remark?: string;
-}
 // create budget
-const createBudget = async (budget: CreateOrUpdateBudgetOptions): Promise<Budget> => {
-    return POSTFetcher("api/backend/finance/budget/add", { payload: budget });
+const createBudget = async (budget: CreateOrUpdateBudgetReq): Promise<Budget> => {
+    return POSTFetcher("api/finance/category/add", { payload: budget });
 };
 
 // update budget
-const update_budget = async (budget: CreateOrUpdateBudgetOptions): Promise<Budget> => {
-    return POSTFetcher("api/backend/finance/budget/update", { payload: budget });
+const update_budget = async (budget: CreateOrUpdateBudgetReq): Promise<Budget> => {
+    return POSTFetcher("api/finance/category/update", { payload: budget });
 };
 
 const delete_budget = async (identifiers: Array<string>): Promise<void> => {
     const payload = identifiers.map((item) => ({ identifier: item }));
-    return POSTFetcher("api/backend/finance/budget/delete", { payload: payload });
-}
-
-export interface QueryBudgetPayload {
-    identifiers?: string[];
-    page?: PageRequest;
+    return POSTFetcher("api/finance/category/delete", { payload: payload });
 }
 
 const query_budget_by_options = async (options?: QueryBudgetPayload): Promise<PageResponse<Budget>> => {
-    return POSTFetcher("api/backend/finance/budget/query", { payload: options ?? {} });
+    return POSTFetcher("api/finance/category/query", { payload: options ?? {} });
 }
 
-export interface CreateOrUpdateFlowOptions {
-    identifier?: string; // 唯一标识
-    title: string; // 标题
-    user_idf?: string; // 用户唯一标识
-    money_fen: number; // 金额
-    root_budget_idf?: string; // 根预算唯一标识
-    budget_idf?: string; // 预算唯一标识
-
-    in_or_out: FlowInOrOut; // 账单类型
-    flow_status: FlowStatus; // 账单状态
-    pay_type: PayType; // 支付类型
-    pay_detail?: string; // 支付详情
-
-    counterparty?: string; // 交易对方
-    order_id?: string; // 订单号
-
-    product_info?: string; // 产品详情
-    source_raw?: string; // 原始来源
-    remark?: string; // 备注
-    spend_at: Date | number; // 消费时间
-}
-
-const createFlow = async (flow: CreateOrUpdateFlowOptions): Promise<Flow> => {
+const createFlow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
 
     const round_int = Math.round(flow.money_fen);
     if (round_int !== flow.money_fen) {
@@ -257,33 +224,21 @@ const createFlow = async (flow: CreateOrUpdateFlowOptions): Promise<Flow> => {
     }
     flow.money_fen = round_int;
     flow.spend_at = dayjs(flow.spend_at).valueOf();
-    return POSTFetcher("api/backend/finance/flow/add", { payload: flow });
+    return POSTFetcher("api/finance/bill/add", { payload: flow });
 };
 
-export interface QueryFlowPayload {
-    identifiers?: string[];
-    budget_idf?: string;
-    user_idf?: string;
-    start_at?: number;
-    end_at?: number;
-    in_or_out?: FlowInOrOut;
-    flow_status?: FlowStatus;
-    pay_type?: PayType;
-    counterparty?: string; // 交易对方
-}
-
 const query_flow_by_options = async (options?: QueryFlowPayload, page?: PageRequest): Promise<PageResponse<Flow>> => {
-    return POSTFetcher("api/backend/finance/flow/query", { payload: options ?? {}, page: page });
+    return POSTFetcher("api/finance/bill/query", { payload: options ?? {}, page: page });
 }
 
-const update_flow = async (flow: CreateOrUpdateFlowOptions): Promise<Flow> => {
+const update_flow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
     const round_int = Math.round(flow.money_fen);
     if (round_int !== flow.money_fen) {
         throw new Error("金额必须为整数");
     }
     flow.money_fen = round_int;
     flow.spend_at = dayjs(flow.spend_at).valueOf();
-    return POSTFetcher("api/backend/finance/flow/update", { payload: flow });
+    return POSTFetcher("api/finance/bill/update", { payload: flow });
 }
 
 const budget_fetcher = async (options?: QueryBudgetPayload, page?: PageRequest) => {
@@ -325,7 +280,7 @@ export interface QueryBudgetPiePayload {
 }
 
 const query_pin_info_by_options = async (options?: QueryBudgetPiePayload): Promise<BudgetWithMoney[]> => {
-    return POSTFetcher("api/backend/finance/overview", { payload: options ?? {} });
+    return POSTFetcher("api/finance/overview", { payload: options ?? {} });
 }
 const query_pie_info_fetcher = async (options?: QueryBudgetPiePayload) => {
     return query_pin_info_by_options(options);

@@ -1,6 +1,6 @@
 
-import { useBudgetList } from '@/service/finance';
-import { useUserList } from '@/service/user';
+import { useBudgetList } from '@/server/finance';
+import { useUserList } from '@/server/user';
 import { Flow, FlowInOrOutMapTitle, FlowStatus } from '@/types/models';
 import { Badge, Table, Group, Text, ActionIcon, rem } from '@mantine/core';
 import { IconFlagCheck, IconPencil, IconTrash } from '@tabler/icons-react';
@@ -71,7 +71,7 @@ export function FlowTable({ data, onDeleteAction, onEditAction, onPassAction }: 
                 </Table.Td>
                 <Table.Td>
                     <Text fz="sm">
-                        {userList?.data.find(user => user.identifier === item.user_idf)?.username}
+                        {userList?.data.find(user => user.identifier === item.user_idf)?.userName}
                     </Text>
                 </Table.Td>
 

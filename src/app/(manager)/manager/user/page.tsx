@@ -10,6 +10,7 @@ import { modals } from '@mantine/modals';
 import { CreateUserForm } from "@/components/Form/CreateUserForm";
 import { User } from "@/types/models";
 import { CreateUserOptions, createUser, query_user_by_options, useUserList } from "@/server/user";
+import { POSTFetcher } from "@/server/global/api";
 
 const UserListPage = () => {
     const router = useRouter();
@@ -28,7 +29,7 @@ const UserListPage = () => {
             console.log(`创建用户失败：${error}`)
         } finally {
             modals.closeAll();
-            // userMutate();
+            userMutate();
         }
     }
     const onCreateUserModalAction = () => {
@@ -46,8 +47,10 @@ const UserListPage = () => {
         modals.openConfirmModal({
             title: '删除用户',
             withCloseButton: true,
-            onConfirm: () => {
-                console.log(`删除用户：${user.userName} 暂时不可用`);
+            onConfirm: async () => {
+                await POSTFetcher("/api/user/delete", { identifier: user.identifier }).then(() => {
+                    userMutate();
+                });
             },
             labels: { confirm: '确定', cancel: '取消' },
         })

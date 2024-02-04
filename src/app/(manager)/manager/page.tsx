@@ -1,7 +1,7 @@
 'use client';
 
 import BoardStat, { StatItem } from "@/components/Stat/BoardStat";
-import { useBudgetList, useBudgetPieInfo, useFlowList } from "@/service/finance";
+import { useBudgetList, useBudgetPieInfo, useFlowList } from "@/server/finance";
 import { FlowInOrOut, FlowStatus } from "@/types/models";
 import { Button, Card, Group, Progress, Text } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";

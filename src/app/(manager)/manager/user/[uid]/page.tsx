@@ -1,8 +1,8 @@
 'use client';
 
 import { PageContainer } from '@/components/PageContainer/PageContainer';
-import { getUserByIdentifier, getUserByOptions } from '@/service/user';
-import { Gender, User } from '@/types/models';
+import { getUserByIdentifier } from '@/server/user';
+import { Gender, User } from '@/types';
 import { Avatar, Button, Container, Group, Paper, Select, Text, TextInput } from '@mantine/core';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -24,13 +24,13 @@ export default function UserDetailPage() {
             <PageContainer title='用户详情'>
                 <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
                     <Avatar
-                        src={user?.username}
+                        src={user?.userName}
                         size={120}
                         radius={120}
                         mx="auto"
                     />
                     <Text ta="center" fz="lg" fw={500} mt="md">
-                        {user?.username}
+                        {user?.userName}
                     </Text>
                     <Text ta="center" c="dimmed" fz="sm">
                         {user?.email ?? "暂无邮箱"} • {user?.phone ?? "暂无手机号"}

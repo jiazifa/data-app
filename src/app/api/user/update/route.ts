@@ -13,7 +13,7 @@ const handler = async (req: NextRequest) => {
   const user: User = newUser as User;
   return NextResponse.json(
     {
-      user,
+      data: user,
     },
     { status: 200 }
   );

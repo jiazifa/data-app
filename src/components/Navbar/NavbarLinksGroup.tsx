@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem, NavLink } from '@mantine/core';
+import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@mantine/core';
 import { IconCalendarStats, IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarLinksGroup.module.css';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface LinksGroupProps {
     icon: React.FC<any>;
@@ -20,45 +21,40 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, link, links }: 
     const router = useRouter();
     const items = (hasLinks ? links : []).map((link) => {
         return (
-            <Text<'a'>
-                component="a"
-                className={classes.link}
-                href={link.link}
-                key={link.label}
-            >
+            <Link className={classes.link} href={link.link} key={link.link}>
                 {link.label}
-            </Text>
+            </Link>
         )
     });
-    let content = (
-        <Box ml="md">{label}</Box>
-    );
-    if (link) {
-        content = (
-            <Box ml="md">
-                <Text<'a'>
-                    component="a"
-                    href={link}
-                    key={label}
-                    onClick={(event) => {
-                        router.push(link);
-                        event.preventDefault()
-                    }}
-                >
-                    {label}
-                </Text>
-            </Box>
-        );
-    }
     return (
         <>
-            <UnstyledButton onClick={() => setOpened((o) => !o)} className={classes.control}>
+            <UnstyledButton key={link ?? ''} onClick={() => setOpened((o) => !o)} className={classes.control}>
                 <Group justify="space-between" gap={0}>
                     <Box style={{ display: 'flex', alignItems: 'center' }} >
                         <ThemeIcon variant="light" size={30}>
                             <Icon style={{ width: rem(18), height: rem(18) }} />
                         </ThemeIcon>
-                        {content}
+                        {
+                            link && (
+                                <Box ml="md">
+                                    <Text<'p'>
+                                        component="p"
+                                        key={label}
+                                        onClick={(event) => {
+                                            router.push(link);
+                                            event.preventDefault()
+                                        }}
+                                    >
+                                        {label}
+                                    </Text>
+                                </Box>
+                            )
+                        }
+                        {
+                            !link && (
+                                <Box ml="md">{label}</Box>
+                            )
+                        }
                     </Box>
                     {hasLinks && (
                         <IconChevronRight

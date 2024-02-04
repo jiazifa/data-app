@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "pnpm",
+      "name": "Web 服务",
       "runtimeExecutable": "pnpm",
       "runtimeArgs": ["run", "dev"]
     }

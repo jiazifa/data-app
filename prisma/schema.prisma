@@ -14,7 +14,7 @@ model Category {
   id         Int      @id @default(autoincrement())
   identifier String   @unique
   title      String
-  parentId   Int?
+  parentIdf  String?
   remark     String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -33,9 +33,9 @@ model User {
   // 生日
   birthday   DateTime?
   // 邮箱
-  email      String?   @unique
+  email      String?
   // 手机号
-  phone      String?   @unique
+  phone      String?
   // 头像
   image      String?
   // 性别

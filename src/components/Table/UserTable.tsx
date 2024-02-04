@@ -1,5 +1,5 @@
 
-import { User } from '@/types/models';
+import { User } from '@/types';
 import { Avatar, Badge, Table, Group, Text, ActionIcon, Anchor, rem } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 
@@ -20,18 +20,18 @@ export function UsersTable({ data, onDeleteUserAction, onEditUserAction }: UserT
         <Table.Tr key={item.identifier}>
             <Table.Td>
                 <Group gap="sm">
-                    <Avatar size={30} src={item.username} radius={30} />
+                    <Avatar size={30} src={item.userName} radius={30} />
                     <Text fz="sm" fw={500}>
-                        {item.username}
+                        {item.userName}
                     </Text>
                 </Group>
             </Table.Td>
 
-            <Table.Td>
+            {/* <Table.Td>
                 <Badge color={jobColors["engineer".toLowerCase()]} variant="light">
                     {"engineer"}
                 </Badge>
-            </Table.Td>
+            </Table.Td> */}
             <Table.Td>
                 <Anchor component="button" size="sm">
                     {item.email}
@@ -58,8 +58,8 @@ export function UsersTable({ data, onDeleteUserAction, onEditUserAction }: UserT
             <Table verticalSpacing="sm">
                 <Table.Thead>
                     <Table.Tr>
-                        <Table.Th>信息</Table.Th>
-                        <Table.Th>Job </Table.Th>
+                        <Table.Th>姓名</Table.Th>
+                        {/* <Table.Th>Tag</Table.Th> */}
                         <Table.Th>邮箱</Table.Th>
                         <Table.Th>电话</Table.Th>
                         <Table.Th />

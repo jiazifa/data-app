@@ -38,7 +38,8 @@ export function Navbar() {
     const links = mockdata.map((item) => <LinksGroup {...item} key={item.label} />);
 
     return (
-        <nav className={classes.navbar}>
+        <>
+            {/* <nav className={classes.navbar}> */}
             <div className={classes.header}>
                 <Group justify="space-between">
                     {/* <Logo style={{ width: rem(120) }} /> */}
@@ -52,6 +53,7 @@ export function Navbar() {
 
             <div className={classes.footer}>
             </div>
-        </nav>
+            {/* </nav> */}
+        </>
     );
 }

@@ -1,7 +1,7 @@
 'use client';
 
-import { CreateOrUpdateFlowOptions, createBudget, createFlow, getCSVContent, parseCSV, parseCSV2FlowOption, useBudgetList } from "@/service/finance";
-import { useUserList } from "@/service/user";
+import { CreateOrUpdateFlowOptions, createBudget, createFlow, getCSVContent, parseCSV, parseCSV2FlowOption, useBudgetList } from "@/server/finance";
+import { useUserList } from "@/server/user";
 import { FlowStatus, FlowInOrOut, PayType, User, Budget } from "@/types/models";
 import { Autocomplete, Box, Button, Container, Group, Progress, Stepper, Text, rem } from "@mantine/core";
 import { Dropzone } from '@mantine/dropzone';
@@ -66,9 +66,9 @@ const ImportFlowForm: FC<ImportFlowPageProps> = ({ onCompleted }: ImportFlowPage
                             withAsterisk
                             label="选择用户"
                             placeholder="请选择用户"
-                            data={(userList?.data ?? []).map((item) => ({ value: item.identifier, label: item.username ?? "未知用户" }))}
+                            data={(userList?.data ?? []).map((item) => ({ value: item.identifier, label: item.userName ?? "未知用户" }))}
                             onChange={(value) => {
-                                const target_user = userList?.data.find((item) => item.username === value);
+                                const target_user = userList?.data.find((item) => item.userName === value);
                                 console.log(`value: ${value} selected user: ${JSON.stringify(target_user)}`);
                                 setSelectedUser(target_user);
                                 nextStep();

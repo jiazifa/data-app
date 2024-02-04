@@ -1,6 +1,6 @@
 'use client';
 
-import { CreateOrUpdateFlowOptions, createBudget, getCSVContent, parseCSV, useBudgetList } from "@/service/finance";
+import { CreateOrUpdateFlowOptions, createBudget, getCSVContent, parseCSV, useBudgetList } from "@/server/finance";
 import { FlowStatus, FlowInOrOut, PayType, User, Budget } from "@/types/models";
 import { Box, Button, Container, Group, Stepper, Text, rem } from "@mantine/core";
 import { Dropzone } from '@mantine/dropzone';

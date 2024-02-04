@@ -1,7 +1,7 @@
 'use client';
 
-import { CreateOrUpdateFlowOptions, update_flow, useBudgetList } from "@/service/finance";
-import { useUserList } from "@/service/user";
+import { CreateOrUpdateFlowOptions, update_flow, useBudgetList } from "@/server/finance";
+import { useUserList } from "@/server/user";
 import { FlowStatus, FlowInOrOut, PayType, Flow, FlowInOrOutMapTitle, FlowStatusMapTitle, PayTypeMapTitle } from "@/types/models";
 import { Textarea, Button, Container, Group, NumberInput, Select, TextInput, Autocomplete } from "@mantine/core";
 import { DateInput, DateTimePicker } from '@mantine/dates';
@@ -103,7 +103,7 @@ const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, f
                             checkIconPosition="right"
                             data={[
                                 ...userList?.data.map((user) => {
-                                    return { value: user.identifier, label: `${user.username}` }
+                                    return { value: user.identifier, label: `${user.userName}` }
                                 }) ?? [
                                 ]
                             ]}

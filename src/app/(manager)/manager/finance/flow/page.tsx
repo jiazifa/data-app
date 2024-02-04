@@ -4,7 +4,7 @@ import { CreateOrEditFlowForm } from "@/components/Form/CreateOrEditFlowForm";
 import { ImportFlowForm } from "@/components/Form/ImportFlowForm";
 import { PageContainer } from "@/components/PageContainer/PageContainer";
 import { FlowTable } from "@/components/Table/FlowTable";
-import { CreateOrUpdateFlowOptions, QueryFlowPayload, createFlow, update_flow, useFlowList } from "@/service/finance";
+import { CreateOrUpdateFlowOptions, QueryFlowPayload, createFlow, update_flow, useFlowList } from "@/server/finance";
 import { FlowStatus, FlowStatusMapTitle } from "@/types/models";
 import { Button, Group, JsonInput, MultiSelect, Pagination } from "@mantine/core";
 import { modals } from "@mantine/modals";

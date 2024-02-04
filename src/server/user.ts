@@ -1,4 +1,4 @@
-import { Gender, PageResponse, PageRequest, User } from "@/types/models";
+import { Gender, PageResponse, PageRequest, User } from "@/types";
 import useSWR from "swr";
 import { POSTFetcher } from "./global/api";
 
@@ -45,7 +45,7 @@ export interface UpdateUserOptions {
 
 // update user
 const updateUser = async (user: UpdateUserOptions): Promise<User> => {
-  return await POSTFetcher("/api/user/update", { payload: user });
+  return await POSTFetcher("/api/user/update", { ...user });
 };
 
 export interface GetUserIsExistsPayload {

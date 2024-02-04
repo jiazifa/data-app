@@ -1,6 +1,6 @@
 
 
-import { CreateOrUpdateBudgetOptions, useBudgetList } from "@/service/finance";
+import { CreateOrUpdateBudgetOptions, useBudgetList } from "@/server/finance";
 import { Budget } from "@/types/models";
 import { Button, Container, Group, Select, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";

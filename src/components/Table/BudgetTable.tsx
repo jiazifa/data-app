@@ -1,6 +1,6 @@
 
-import { useBudgetList } from '@/service/finance';
-import { useUserList } from '@/service/user';
+import { useBudgetList } from '@/server/finance';
+import { useUserList } from '@/server/user';
 import { Budget } from '@/types/models';
 import { Badge, Table, Group, Text, ActionIcon, rem } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';

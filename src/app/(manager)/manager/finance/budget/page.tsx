@@ -4,7 +4,7 @@ import { CreateOrEditBudgetForm } from "@/components/Form/CreateOrEditBudgetForm
 import { ImportBudgetForm } from "@/components/Form/ImportBudgetForm";
 import { PageContainer } from "@/components/PageContainer/PageContainer";
 import { BudgetTable } from "@/components/Table/BudgetTable";
-import { CreateOrUpdateBudgetOptions as CreateOrEditBudgetOptions, createBudget, delete_budget, update_budget, useBudgetList } from "@/service/finance";
+import { CreateOrUpdateBudgetOptions as CreateOrEditBudgetOptions, createBudget, delete_budget, update_budget, useBudgetList } from "@/server/finance";
 import { Button, Group, Pagination } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
