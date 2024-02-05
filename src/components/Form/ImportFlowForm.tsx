@@ -1,8 +1,8 @@
 'use client';
 
-import { CreateOrUpdateFlowOptions, createBudget, createFlow, getCSVContent, parseCSV, parseCSV2FlowOption, useBudgetList } from "@/server/finance";
+import { createBudget, createFlow, getCSVContent, parseCSV, parseCSV2FlowOption, useBudgetList } from "@/server/finance";
 import { useUserList } from "@/server/user";
-import { FlowStatus, FlowInOrOut, PayType, User, Budget } from "@/types/models";
+import { FlowStatus, FlowInOrOut, PayType, User, Budget, CreateOrUpdateFlowReq } from "@/types";
 import { Autocomplete, Box, Button, Container, Group, Progress, Stepper, Text, rem } from "@mantine/core";
 import { Dropzone } from '@mantine/dropzone';
 import { IconCloudUpload, IconDownload, IconX } from "@tabler/icons-react";
@@ -37,11 +37,11 @@ const NextTitleForStep = (step: Step): string => {
 const ImportFlowForm: FC<ImportFlowPageProps> = ({ onCompleted }: ImportFlowPageProps) => {
     const [active, setActive] = useState<Step>(0);
 
-    const { data: userList, error: userError } = useUserList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
-    const { data: budgetList, error: budgetError } = useBudgetList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
+    const { data: userList, error: userError } = useUserList({ page: { page: 1, pageSize: 100000 } });
+    const { data: budgetList, error: budgetError } = useBudgetList({ page: { page: 1, pageSize: 100000 } });
 
     const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
-    const [flows, setFlows] = useState<CreateOrUpdateFlowOptions[]>([]);
+    const [flows, setFlows] = useState<CreateOrUpdateFlowReq[]>([]);
     const [completedCount, setCompletedCount] = useState(0);
     const [errorFlows, setErrorFlows] = useState<string[]>([]);
 

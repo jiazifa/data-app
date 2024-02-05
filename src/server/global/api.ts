@@ -3,12 +3,11 @@ export const GETFetcher = async <Data>(url: string) => {
     method: "GET",
     headers: getDefaultHeaders(),
   });
-  const data = response.json();
-  return data as Data;
+  const data: any = await response.json();
+  return data.data as Data;
 };
 
 export const POSTFetcher = async <Data>(url: string, body?: any) => {
-  console.log("POSTFetcher", url, body);
   const response = await fetch(url, {
     method: "POST",
     headers: {
@@ -16,8 +15,8 @@ export const POSTFetcher = async <Data>(url: string, body?: any) => {
     },
     body: JSON.stringify(body ?? {}),
   });
-  const data = response.json();
-  return data as Data;
+  const data = await response.json();
+  return data.data as Data;
 };
 
 export function getDefaultHeaders() {

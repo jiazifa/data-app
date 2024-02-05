@@ -1,5 +1,5 @@
 import { CreateUserReq, addUser } from "@/models/user";
-import { User } from "@/types/models";
+import { User } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 
 const handler = async (req: NextRequest) => {
@@ -8,7 +8,7 @@ const handler = async (req: NextRequest) => {
   );
 
   // get request body
-  const data: CreateUserReq = await req.json();
+  const data: CreateUserReq = (await req.json()).payload;
   console.log(`[api/user/add] data: ${JSON.stringify(data)}`);
   const newUser = await addUser(data);
   // cast to User type, make sure newUser is not null

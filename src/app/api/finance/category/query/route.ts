@@ -8,7 +8,10 @@ const handler = async (req: NextRequest) => {
       req.body
     )}`
   );
-  const dbReq = (await req.json()) as QueryBudgetPayload;
+  const dbReq = (await req.json()).payload as QueryBudgetPayload;
+  console.log(
+    `[/api/finance/category/query] query_option: ${JSON.stringify(dbReq)}`
+  );
   const budgetInfo = await queryCategoryByOption(dbReq);
   return NextResponse.json(
     {

@@ -199,21 +199,21 @@ export function getCSVContent(raw: string): string {
 
 // create budget
 const createBudget = async (budget: CreateOrUpdateBudgetReq): Promise<Budget> => {
-    return POSTFetcher("api/finance/category/add", { payload: budget });
+    return POSTFetcher("/api/finance/category/add", { payload: budget });
 };
 
 // update budget
 const update_budget = async (budget: CreateOrUpdateBudgetReq): Promise<Budget> => {
-    return POSTFetcher("api/finance/category/update", { payload: budget });
+    return POSTFetcher("/api/finance/category/update", { payload: budget });
 };
 
 const delete_budget = async (identifiers: Array<string>): Promise<void> => {
     const payload = identifiers.map((item) => ({ identifier: item }));
-    return POSTFetcher("api/finance/category/delete", { payload: payload });
+    return POSTFetcher("/api/finance/category/delete", { payload: payload });
 }
 
 const query_budget_by_options = async (options?: QueryBudgetPayload): Promise<PageResponse<Budget>> => {
-    return POSTFetcher("api/finance/category/query", { payload: options ?? {} });
+    return POSTFetcher("/api/finance/category/query", { payload: options ?? {} });
 }
 
 const createFlow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
@@ -224,11 +224,11 @@ const createFlow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
     }
     flow.money_fen = round_int;
     flow.spend_at = dayjs(flow.spend_at).valueOf();
-    return POSTFetcher("api/finance/bill/add", { payload: flow });
+    return POSTFetcher("/api/finance/bill/add", { payload: flow });
 };
 
 const query_flow_by_options = async (options?: QueryFlowPayload, page?: PageRequest): Promise<PageResponse<Flow>> => {
-    return POSTFetcher("api/finance/bill/query", { payload: options ?? {}, page: page });
+    return POSTFetcher("/api/finance/bill/query", { payload: options ?? {}, page: page });
 }
 
 const update_flow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
@@ -238,24 +238,18 @@ const update_flow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
     }
     flow.money_fen = round_int;
     flow.spend_at = dayjs(flow.spend_at).valueOf();
-    return POSTFetcher("api/finance/bill/update", { payload: flow });
+    return POSTFetcher("/api/finance/bill/update", { payload: flow });
 }
 
-const budget_fetcher = async (options?: QueryBudgetPayload, page?: PageRequest) => {
-    options = { page: page, ...options }
+const budget_fetcher = async (options: QueryBudgetPayload) => {
     return query_budget_by_options(options);
 }
 
-const useBudgetList = (options?: QueryBudgetPayload, page?: PageRequest) => {
+const useBudgetList = (options: QueryBudgetPayload) => {
     const params = new URLSearchParams();
-    if (options) {
-        params.append("options", JSON.stringify(options));
-    }
-    if (page) {
-        params.append("page", JSON.stringify(page));
-    }
+    params.append("options", JSON.stringify(options));
 
-    return useSWR<PageResponse<Budget>>(`budget-list?${params.toString()}`, () => budget_fetcher(options, page));
+    return useSWR(`budget-list?${params.toString()}`, () => budget_fetcher(options));
 }
 
 const flow_fetcher = async (options?: QueryFlowPayload, page?: PageRequest) => {
@@ -280,7 +274,7 @@ export interface QueryBudgetPiePayload {
 }
 
 const query_pin_info_by_options = async (options?: QueryBudgetPiePayload): Promise<BudgetWithMoney[]> => {
-    return POSTFetcher("api/finance/overview", { payload: options ?? {} });
+    return POSTFetcher("/api/finance/overview", { payload: options ?? {} });
 }
 const query_pie_info_fetcher = async (options?: QueryBudgetPiePayload) => {
     return query_pin_info_by_options(options);

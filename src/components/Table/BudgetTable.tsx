@@ -1,7 +1,8 @@
+'use client';
 
 import { useBudgetList } from '@/server/finance';
 import { useUserList } from '@/server/user';
-import { Budget } from '@/types/models';
+import { Budget } from '@/types';
 import { Badge, Table, Group, Text, ActionIcon, rem } from '@mantine/core';
 import { IconPencil, IconTrash } from '@tabler/icons-react';
 import dayjs from 'dayjs';
@@ -14,10 +15,10 @@ type BudgetTableProps = {
 };
 
 export function BudgetTable({ budgets, onEditBudgetAction, onDeleteBudgetAction }: BudgetTableProps) {
-    const { data: allBudget } = useBudgetList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
+    const { data: budgetsPage } = useBudgetList({ page: { page: 1, pageSize: 1000000 } });
     let budgetMap = new Map<string, string>();
-    if (allBudget) {
-        allBudget.data.forEach((item) => {
+    if (budgetsPage && Array.isArray(budgetsPage.data)) {
+        budgetsPage.data.forEach((item) => {
             budgetMap.set(item.identifier, item.title ?? "未知用户");
         });
     }

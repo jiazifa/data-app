@@ -4,7 +4,8 @@ import { CreateOrEditBudgetForm } from "@/components/Form/CreateOrEditBudgetForm
 import { ImportBudgetForm } from "@/components/Form/ImportBudgetForm";
 import { PageContainer } from "@/components/PageContainer/PageContainer";
 import { BudgetTable } from "@/components/Table/BudgetTable";
-import { CreateOrUpdateBudgetOptions as CreateOrEditBudgetOptions, createBudget, delete_budget, update_budget, useBudgetList } from "@/server/finance";
+import { createBudget, delete_budget, update_budget, useBudgetList } from "@/server/finance";
+import { CreateOrUpdateBudgetReq } from "@/types";
 import { Button, Group, Pagination } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
@@ -12,12 +13,14 @@ import { useState } from "react";
 
 const BudgetListPage = () => {
     const [activePage, setPage] = useState(1);
-    const { data: budgetList, error, mutate: budgetMutate } = useBudgetList(undefined, { page: activePage, page_size: 20 });
+    const { data: budgetList, error, mutate: budgetMutate } = useBudgetList({ page: { page: activePage, pageSize: 20 } });
     if (error) {
         console.log(`获取预算列表失败：${error}`)
+    } else {
+        console.log(`获取预算列表成功：${JSON.stringify(budgetList?.data)}`)
     }
 
-    const onAddBudgetAction = async (values: CreateOrEditBudgetOptions) => {
+    const onAddBudgetAction = async (values: CreateOrUpdateBudgetReq) => {
         try {
             if (values.identifier) {
                 const budget = await update_budget({ ...values });

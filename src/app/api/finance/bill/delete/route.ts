@@ -13,7 +13,7 @@ const handler = async (req: NextRequest) => {
   );
 
   // get request body
-  const data: RemoveReq = await req.json();
+  const data: RemoveReq = (await req.json()).payload as RemoveReq;
   console.log(
     `[api/finance/bill/delete] query_option: ${JSON.stringify(data)}`
   );
@@ -22,6 +22,7 @@ const handler = async (req: NextRequest) => {
   return NextResponse.json(
     {
       data: count,
+      code: 200,
     },
     { status: 200 }
   );

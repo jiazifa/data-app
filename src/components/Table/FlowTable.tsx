@@ -1,7 +1,8 @@
 
 import { useBudgetList } from '@/server/finance';
 import { useUserList } from '@/server/user';
-import { Flow, FlowInOrOutMapTitle, FlowStatus } from '@/types/models';
+import { Flow, FlowStatus } from '@/types';
+import { FlowInOrOutMapTitle } from '@/types/models';
 import { Badge, Table, Group, Text, ActionIcon, rem } from '@mantine/core';
 import { IconFlagCheck, IconPencil, IconTrash } from '@tabler/icons-react';
 import dayjs from 'dayjs';
@@ -39,8 +40,8 @@ const status2text = (status: FlowStatus) => {
 
 
 export function FlowTable({ data, onDeleteAction, onEditAction, onPassAction }: FlowTableProps) {
-    const { data: budgetList, error: budgetListError } = useBudgetList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
-    const { data: userList, error: userListError } = useUserList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
+    const { data: budgetList, error: budgetListError } = useBudgetList({ page: { page: 1, pageSize: 100000 } });
+    const { data: userList, error: userListError } = useUserList({ page: { page: 1, pageSize: 100000 } });
     if (budgetListError) {
         return <Badge color="red">预算列表加载失败</Badge>;
     }

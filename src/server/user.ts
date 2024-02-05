@@ -10,32 +10,28 @@ export interface CreateUserOptions {
 }
 // create user
 const createUser = async (user: CreateUserOptions): Promise<User> => {
-  return POSTFetcher("/api/user/add", { ...user });
+  return POSTFetcher("/api/user/add", { payload: user });
 };
 
 export interface GetUserOptions {
   identifiers?: string[];
-  page?: PageRequest;
+  page: PageRequest;
 }
 
 // get user
 const query_user_by_options = async (
-  option?: GetUserOptions
+  option: GetUserOptions
 ): Promise<PageResponse<User>> => {
-  const opt = { page: { skip: 0, take: 10 }, ...option };
-  if (option && option.page) {
-    opt.page = {
-      skip: (option.page.page - 1) * option.page.page_size,
-      take: option.page.page_size,
-    };
-  }
-  return await POSTFetcher("/api/user/query", {
-    opt,
-  });
+  return await POSTFetcher("/api/user/query", { payload: option });
 };
 
 const getUserByIdentifier = async (uid: string): Promise<User> => {
-  return (await query_user_by_options({ identifiers: [uid] })).data[0];
+  return (
+    await query_user_by_options({
+      identifiers: [uid],
+      page: { page: 1, pageSize: 1 },
+    })
+  ).data[0];
 };
 
 export interface UpdateUserOptions {
@@ -45,7 +41,7 @@ export interface UpdateUserOptions {
 
 // update user
 const updateUser = async (user: UpdateUserOptions): Promise<User> => {
-  return await POSTFetcher("/api/user/update", { ...user });
+  return await POSTFetcher("/api/user/update", { payload: user });
 };
 
 export interface GetUserIsExistsPayload {
@@ -53,21 +49,17 @@ export interface GetUserIsExistsPayload {
   phone?: string;
 }
 
-const user_fetcher = async (option?: GetUserOptions, page?: PageRequest) => {
-  option = { page: page, ...option };
+const user_fetcher = async (option: GetUserOptions) => {
   return query_user_by_options(option);
 };
 
-const useUserList = (option?: GetUserOptions, page?: PageRequest) => {
+const useUserList = (option: GetUserOptions) => {
   const params = new URLSearchParams();
   if (option) {
     params.append("option", JSON.stringify(option));
   }
-  if (page) {
-    params.append("page", JSON.stringify(page));
-  }
-  return useSWR(`user-list?${params.toString()}`, () =>
-    user_fetcher(option, page)
+  return useSWR<PageResponse<User>>(`user-list?${params.toString()}`, () =>
+    user_fetcher(option)
   );
 };
 

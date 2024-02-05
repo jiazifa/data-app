@@ -8,7 +8,7 @@ const handler = async (req: NextRequest) => {
       req.body
     )}`
   );
-  const dbReq = (await req.json()) as QueryFlowPayload;
+  const dbReq = (await req.json()).payload as QueryFlowPayload;
   const budgetInfo = await queryBillByOption(dbReq);
   return NextResponse.json(
     {

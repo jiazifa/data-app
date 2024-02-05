@@ -1,7 +1,7 @@
 import { removeCategoryByIdentifiers } from "@/models/finance";
 import { NextRequest, NextResponse } from "next/server";
 
-type RemoveUserReq = {
+type RemoveCategoryReq = {
   identifiers: string[];
 };
 
@@ -13,7 +13,8 @@ const handler = async (req: NextRequest) => {
   );
 
   // get request body
-  const data: RemoveUserReq = await req.json();
+  const data: RemoveCategoryReq = (await req.json())
+    .payload as RemoveCategoryReq;
   console.log(
     `[api/finance/category/delete] query_option: ${JSON.stringify(data)}`
   );

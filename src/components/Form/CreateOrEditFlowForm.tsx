@@ -1,8 +1,9 @@
 'use client';
 
-import { CreateOrUpdateFlowOptions, update_flow, useBudgetList } from "@/server/finance";
+import { update_flow, useBudgetList } from "@/server/finance";
 import { useUserList } from "@/server/user";
-import { FlowStatus, FlowInOrOut, PayType, Flow, FlowInOrOutMapTitle, FlowStatusMapTitle, PayTypeMapTitle } from "@/types/models";
+import { FlowStatus, FlowInOrOut, PayType, Flow, CreateOrUpdateFlowReq } from "@/types";
+import { FlowInOrOutMapTitle, FlowStatusMapTitle, PayTypeMapTitle } from "@/types/models";
 import { Textarea, Button, Container, Group, NumberInput, Select, TextInput, Autocomplete } from "@mantine/core";
 import { DateInput, DateTimePicker } from '@mantine/dates';
 import { useForm } from "@mantine/form";
@@ -10,13 +11,13 @@ import dayjs from "dayjs";
 import { FC, useState } from "react";
 
 type CreateOrEditFlowPageProps = {
-    onSubmitAction: (values: CreateOrUpdateFlowOptions) => void;
+    onSubmitAction: (values: CreateOrUpdateFlowReq) => void;
     flow?: Flow;
 };
 
 const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, flow }: CreateOrEditFlowPageProps) => {
-    const { data: userList, error: userError } = useUserList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
-    const { data: budgetList, error: budgetError } = useBudgetList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
+    const { data: userList, error: userError } = useUserList({ page: { page: 1, pageSize: 100000 } });
+    const { data: budgetList, error: budgetError } = useBudgetList({ page: { page: 1, pageSize: 100000 } });
     if (budgetError) {
         console.log(`获取预算列表失败：${budgetError}`)
     }
@@ -46,7 +47,7 @@ const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, f
         console.log(`root_budget_idf: ${root_budget_idf}, budget_idf: ${budget_idf} budget: ${JSON.stringify(budget)}`)
     }
 
-    const form = useForm<CreateOrUpdateFlowOptions>({
+    const form = useForm<CreateOrUpdateFlowReq>({
         initialValues: {
             identifier: flow?.identifier,
             title: flow?.title ?? '测试账单',

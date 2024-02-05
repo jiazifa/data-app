@@ -8,7 +8,7 @@ const handler = async (req: NextRequest) => {
       req.body
     )}`
   );
-  const dbReq = (await req.json()) as CreateOrUpdateBudgetReq;
+  const dbReq = (await req.json()).payload as CreateOrUpdateBudgetReq;
   const budget = await addOrUpdateCategory(dbReq);
   return NextResponse.json(
     {

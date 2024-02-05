@@ -4,8 +4,9 @@ import { CreateOrEditFlowForm } from "@/components/Form/CreateOrEditFlowForm";
 import { ImportFlowForm } from "@/components/Form/ImportFlowForm";
 import { PageContainer } from "@/components/PageContainer/PageContainer";
 import { FlowTable } from "@/components/Table/FlowTable";
-import { CreateOrUpdateFlowOptions, QueryFlowPayload, createFlow, update_flow, useFlowList } from "@/server/finance";
-import { FlowStatus, FlowStatusMapTitle } from "@/types/models";
+import { createFlow, update_flow, useFlowList } from "@/server/finance";
+import { FlowStatus, QueryFlowPayload, CreateOrUpdateFlowReq } from "@/types";
+import { FlowStatusMapTitle } from "@/types/models";
 import { Button, Group, JsonInput, MultiSelect, Pagination } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
@@ -13,7 +14,7 @@ import { useState } from "react";
 const FlowListPage = () => {
     const [activePage, setPage] = useState(1);
     const [flowOptions, setFlowOptions] = useState<QueryFlowPayload>({});
-    const { data: flowList, error: flowError, mutate: flowMutate } = useFlowList(flowOptions, { page: activePage, page_size: 20 });
+    const { data: flowList, error: flowError, mutate: flowMutate } = useFlowList(flowOptions, { page: activePage, pageSize: 20 });
     if (flowError) {
         console.log(`获得账单列表失败: ${flowError}`);
     }
@@ -21,7 +22,7 @@ const FlowListPage = () => {
     if (flowList) {
         console.log(`获得账单列表成功: ${flowList}`);
     }
-    const onAddFlowAction = async (values: CreateOrUpdateFlowOptions) => {
+    const onAddFlowAction = async (values: CreateOrUpdateFlowReq) => {
         try {
             if (values.identifier) {
                 const flow = await update_flow({ ...values });

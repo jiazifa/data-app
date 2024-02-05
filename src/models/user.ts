@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { getDB } from "./db";
 import { v4 as uuidv4 } from "uuid";
+import { PageRequest, PageResponse, sql_page_option } from "@/types";
 
 export type CreateUserReq = {
   name: string;
@@ -71,25 +72,35 @@ export async function updateUserByIdentifier(
 
 export type QueryUserOptions = {
   identifiers?: string[];
-  page?: {
-    skip: number;
-    take: number;
-  };
+  page: PageRequest;
 };
 
-export async function query_user_by_options(
-  option?: QueryUserOptions
-): Promise<User[]> {
+export async function queryUserByOptions(
+  option: QueryUserOptions
+): Promise<PageResponse<User>> {
   const db = getDB();
+  const page = sql_page_option(option.page);
   const res = await db.user.findMany({
     where: option?.identifiers && {
       identifier: {
-        in: option?.identifiers,
+        in: option?.identifiers ?? [],
       },
     },
-    ...option?.page,
+    ...page,
   });
-  return res;
+  const count = await db.user.count({
+    where: option?.identifiers && {
+      identifier: {
+        in: option?.identifiers ?? [],
+      },
+    },
+  });
+  return {
+    data: res,
+    total_page: Math.floor(count / option.page.pageSize),
+    cur_page: option.page.page,
+    page_size: option.page.pageSize,
+  };
 }
 
 export async function removeUserByIdentifier(

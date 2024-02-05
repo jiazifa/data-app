@@ -19,11 +19,15 @@ export async function addOrUpdateCategory(
   const simplifiedUuid = uuid.replace(/-/g, "");
 
   // find category by identifier
-  const category = await db.category.findUnique({
-    where: {
-      identifier: req.identifier,
-    },
-  });
+  let category: Category | null = null;
+  if (req.identifier) {
+    category = await db.category.findUnique({
+      where: {
+        identifier: req.identifier,
+      },
+    });
+  }
+
   if (category) {
     // update category
     return await db.category.update({

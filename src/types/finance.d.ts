@@ -62,7 +62,7 @@ export enum PayType {
 
 export interface QueryBudgetPayload {
   identifiers?: string[];
-  page?: PageRequest;
+  page: PageRequest;
 }
 
 export interface QueryFlowPayload {

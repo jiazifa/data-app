@@ -14,12 +14,13 @@ import { POSTFetcher } from "@/server/global/api";
 
 const UserListPage = () => {
     const router = useRouter();
-    const { data, error, mutate: userMutate } = useUserList();
+    const { data, error, mutate: userMutate } = useUserList({ page: { page: 1, pageSize: 1000 } });
     if (error) {
         console.log(`获取用户列表失败：${error}`)
+    } else {
+        console.log(`获取用户列表成功：${JSON.stringify(data)}`)
     }
 
-    console.log(`获取用户列表成功：${JSON.stringify(data)}`)
 
     const onAddUserAction = async (values: CreateUserOptions) => {
         try {

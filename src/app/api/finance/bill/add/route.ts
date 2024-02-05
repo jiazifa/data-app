@@ -8,7 +8,7 @@ const handler = async (req: NextRequest) => {
       req.body
     )}`
   );
-  const dbReq = (await req.json()) as CreateOrUpdateFlowReq;
+  const dbReq = (await req.json()).payload as CreateOrUpdateFlowReq;
   const entity = await createOrUpdateBill(dbReq);
   return NextResponse.json(
     {
