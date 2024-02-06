@@ -1,7 +1,7 @@
-import { User } from "@prisma/client";
 import { getDB } from "./db";
 import { v4 as uuidv4 } from "uuid";
-import { PageRequest, PageResponse, sql_page_option } from "@/types";
+import dayjs from "dayjs";
+import { PageRequest, PageResponse, User, sql_page_option } from "@/types";
 
 export type CreateUserReq = {
   name: string;
@@ -18,17 +18,18 @@ export async function addUser(req: CreateUserReq): Promise<User> {
   const db = getDB();
   const uuid = uuidv4();
   const simplifiedUuid = uuid.replace(/-/g, "");
+  const birthday = dayjs(req.birthday).toDate();
   const user = await db.user.create({
     data: {
-      userName: req.name,
+      user_name: req.name,
       identifier: simplifiedUuid,
       phone: req.phone,
       email: req.email,
       gender: req.gender,
-      birthday: req.birthday,
-      image: req.image,
-      createdAt,
-      updatedAt,
+      birthday,
+      image: req.image || "",
+      created_at: createdAt,
+      updated_at: updatedAt,
     },
   });
   return user;
@@ -54,17 +55,20 @@ export async function updateUserByIdentifier(
   req: UpdateUserReq
 ): Promise<User> {
   const db = getDB();
+  const updatedAt = new Date();
+  const birthday = dayjs(req.birthday).toDate();
   const res = await db.user.update({
     where: {
       identifier: req.identifier,
     },
     data: {
-      userName: req.name,
+      user_name: req.name,
       phone: req.phone,
       email: req.email,
       gender: req.gender,
-      birthday: req.birthday,
+      birthday,
       image: req.image,
+      updated_at: updatedAt,
     },
   });
   return res;

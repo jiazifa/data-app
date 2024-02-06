@@ -9,10 +9,13 @@ const handler = async (req: NextRequest) => {
     )}`
   );
   const dbReq = (await req.json()).payload as QueryFlowPayload;
-  const budgetInfo = await queryBillByOption(dbReq);
+  console.log(
+    `[/api/finance/category/query] query_option: ${JSON.stringify(dbReq)}`
+  );
+  const billRes = await queryBillByOption(dbReq);
   return NextResponse.json(
     {
-      data: budgetInfo,
+      data: billRes,
       code: 200,
     },
     { status: 200 }

@@ -7,7 +7,7 @@ export enum Gender {
 export interface User {
   id: number;
   identifier: string;
-  userName?: string;
+  user_name?: string;
   gender: Gender;
   email?: string;
   phone?: string;

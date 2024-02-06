@@ -29,7 +29,7 @@ const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, f
     if (flow) {
         spend_time = dayjs(flow.spend_at).toDate();
     }
-    const rootBudgets = (budgetList?.data ?? []).filter((value) => (value.parentIdf ?? '') === '');
+    const rootBudgets = (budgetList?.data ?? []).filter((value) => (value.parent_idf ?? '') === '');
     let root_budget_idf = '';
     let budget_idf = '';
 
@@ -37,9 +37,9 @@ const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, f
         const budget = budgetList?.data.find((budget) => budget.identifier === flow?.budget_idf);
 
         if (budget) {
-            if (budget?.parentIdf) {
+            if (budget?.parent_idf) {
                 budget_idf = budget.identifier;
-                root_budget_idf = budget.parentIdf;
+                root_budget_idf = budget.parent_idf;
             } else {
                 root_budget_idf = budget.identifier;
             }
@@ -104,7 +104,7 @@ const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, f
                             checkIconPosition="right"
                             data={[
                                 ...userList?.data.map((user) => {
-                                    return { value: user.identifier, label: `${user.userName}` }
+                                    return { value: user.identifier, label: `${user.user_name}` }
                                 }) ?? [
                                 ]
                             ]}
@@ -135,7 +135,7 @@ const CreateOrEditFlowForm: FC<CreateOrEditFlowPageProps> = ({ onSubmitAction, f
                                     if (root_budget_idf === '') {
                                         return false;
                                     }
-                                    return (value.parentIdf ?? '') === root_budget_idf;
+                                    return (value.parent_idf ?? '') === root_budget_idf;
                                 }).map((budget) => {
                                     return { value: budget.identifier, label: `${budget.title}` }
                                 }) ?? []

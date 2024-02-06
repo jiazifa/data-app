@@ -20,9 +20,9 @@ export function UsersTable({ data, onDeleteUserAction, onEditUserAction }: UserT
         <Table.Tr key={item.identifier}>
             <Table.Td>
                 <Group gap="sm">
-                    <Avatar size={30} src={item.userName} radius={30} />
+                    <Avatar size={30} src={item.user_name} radius={30} />
                     <Text fz="sm" fw={500}>
-                        {item.userName}
+                        {item.user_name}
                     </Text>
                 </Group>
             </Table.Td>

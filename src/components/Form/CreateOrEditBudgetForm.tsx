@@ -16,7 +16,7 @@ const CreateOrEditBudgetForm: FC<CreateOrEditBudgetPageProps> = ({ budget, onSub
     const form = useForm<CreateOrUpdateBudgetReq>({
         initialValues: {
             identifier: budget?.identifier,
-            parentIdf: budget?.parentIdf ?? '',
+            parent_idf: budget?.parent_idf ?? '',
             title: budget?.title ?? '',
             remark: budget?.remark ?? '',
         },
@@ -37,9 +37,9 @@ const CreateOrEditBudgetForm: FC<CreateOrEditBudgetPageProps> = ({ budget, onSub
             <Container size='xs'>
                 <form onSubmit={form.onSubmit((values) => {
                     if (values.remark === '') {
-                        values.remark = `${budgetData?.data.find((item) => item.identifier === values.parentIdf)?.title ?? ''}-${values.title ?? ''}`
+                        values.remark = `${budgetData?.data.find((item) => item.identifier === values.parent_idf)?.title ?? ''}-${values.title ?? ''}`
                     }
-                    console.log(`values: ${JSON.stringify(values)}`)
+                    console.log(`update budget values: ${JSON.stringify(values)}`)
                     onSubmitAction(values)
                 })}>
                     <Group grow mt='md'>

@@ -27,7 +27,7 @@ export default function Dashboard() {
 
     // const { data: budgetListData } = useBudgetList(undefined, { page: 1, page_size: Number.MAX_SAFE_INTEGER });
 
-    // const rootBudget = (budgetListData?.data ?? []).filter((item) => item.parentIdf == "");
+    // const rootBudget = (budgetListData?.data ?? []).filter((item) => item.parent_idf == "");
     // const root_budget_idfs = rootBudget.map((item) => item.identifier);
 
     // console.log(`allBudgetNames: ${JSON.stringify(budgetListData)}`)

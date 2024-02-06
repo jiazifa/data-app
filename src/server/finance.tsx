@@ -227,8 +227,8 @@ const createFlow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
     return POSTFetcher("/api/finance/bill/add", { payload: flow });
 };
 
-const query_flow_by_options = async (options?: QueryFlowPayload, page?: PageRequest): Promise<PageResponse<Flow>> => {
-    return POSTFetcher("/api/finance/bill/query", { payload: options ?? {}, page: page });
+const query_flow_by_options = async (options: QueryFlowPayload): Promise<PageResponse<Flow>> => {
+    return POSTFetcher("/api/finance/bill/query", { payload: options });
 }
 
 const update_flow = async (flow: CreateOrUpdateFlowReq): Promise<Flow> => {
@@ -252,20 +252,17 @@ const useBudgetList = (options: QueryBudgetPayload) => {
     return useSWR(`budget-list?${params.toString()}`, () => budget_fetcher(options));
 }
 
-const flow_fetcher = async (options?: QueryFlowPayload, page?: PageRequest) => {
-    return query_flow_by_options(options, page);
+const flow_fetcher = async (options: QueryFlowPayload) => {
+    return query_flow_by_options(options);
 }
 
-const useFlowList = (options?: QueryFlowPayload, page?: PageRequest) => {
+const useFlowList = (options: QueryFlowPayload) => {
     const params = new URLSearchParams();
     if (options) {
         params.append("options", JSON.stringify(options));
     }
-    if (page) {
-        params.append("page", JSON.stringify(page));
-    }
     const queryString = params.toString();
-    return useSWR<PageResponse<Flow>>(`flow-list?${queryString}`, () => flow_fetcher(options, page), {});
+    return useSWR<PageResponse<Flow>>(`flow-list?${queryString}`, () => flow_fetcher(options), {});
 }
 export interface QueryBudgetPiePayload {
     budget_idfs?: string[];

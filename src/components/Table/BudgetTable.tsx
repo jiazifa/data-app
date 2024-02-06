@@ -31,7 +31,7 @@ export function BudgetTable({ budgets, onEditBudgetAction, onDeleteBudgetAction 
             </Table.Td>
 
             <Table.Td>
-                <Text fz="sm">{budgetMap.get(item.parentIdf ?? "") ?? "无"}</Text>
+                <Text fz="sm">{budgetMap.get(item.parent_idf ?? "") ?? "无"}</Text>
             </Table.Td>
 
             <Table.Td>

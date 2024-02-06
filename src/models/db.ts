@@ -1,10 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-let prisma: PrismaClient;
+
+let prisma: PrismaClient = new PrismaClient();
 
 const getDB = () => {
-  if (!prisma) {
-    prisma = new PrismaClient();
-  }
   return prisma;
 };
 

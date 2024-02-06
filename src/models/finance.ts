@@ -1,7 +1,6 @@
 import {
   CreateOrUpdateBudgetReq as CreateOrUpdateCategoryReq,
   CreateOrUpdateFlowReq,
-  PageResponse,
   QueryBudgetPayload,
   QueryFlowPayload as QueryBillPayload,
   sql_page_option,
@@ -9,17 +8,14 @@ import {
 import { getDB } from "./db";
 import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
-import { Bill, Category } from "@prisma/client";
 
-export async function addOrUpdateCategory(
-  req: CreateOrUpdateCategoryReq
-): Promise<Category> {
+export async function addOrUpdateCategory(req: CreateOrUpdateCategoryReq) {
   const db = getDB();
   const uuid = uuidv4();
   const simplifiedUuid = uuid.replace(/-/g, "");
 
   // find category by identifier
-  let category: Category | null = null;
+  let category = null;
   if (req.identifier) {
     category = await db.category.findUnique({
       where: {
@@ -36,10 +32,10 @@ export async function addOrUpdateCategory(
       },
       data: {
         title: req.title,
-        parentIdf: req.parentIdf,
+        parent_idf: req.parent_idf,
         remark: req.remark,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
   } else {
@@ -48,40 +44,42 @@ export async function addOrUpdateCategory(
       data: {
         identifier: simplifiedUuid,
         title: req.title,
-        parentIdf: req.parentIdf,
+        parent_idf: req.parent_idf,
         remark: req.remark,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        created_at: new Date(),
+        updated_at: new Date(),
       },
     });
   }
 }
 
-export async function queryCategoryByOption(
-  option: QueryBudgetPayload
-): Promise<PageResponse<Category>> {
+export async function queryCategoryByOption(option: QueryBudgetPayload) {
   const db = getDB();
   const page = sql_page_option(option.page ?? { page: 1, pageSize: 10 });
   const categories = await db.category.findMany({
     where: {
-      identifier: {
-        in: option.identifiers,
-      },
+      ...(option.identifiers && {
+        identifier: {
+          in: option.identifiers,
+        },
+      }),
     },
     ...page,
   });
   const pageTotal = await db.category.count({
     where: {
-      identifier: {
-        in: option.identifiers,
-      },
+      ...(option.identifiers && {
+        identifier: {
+          in: option.identifiers,
+        },
+      }),
     },
   });
   return {
     data: categories,
     total_page: pageTotal,
     page_size: page.take,
-    cur_page: option.page?.page ?? 1,
+    cur_page: option.page?.page || 1,
   };
 }
 
@@ -99,60 +97,94 @@ export async function removeCategoryByIdentifiers(
   return payload.count;
 }
 
-export async function createOrUpdateBill(
-  req: CreateOrUpdateFlowReq
-): Promise<Bill> {
+export async function createOrUpdateBill(req: CreateOrUpdateFlowReq) {
   const db = getDB();
   const uuid = uuidv4();
   const simplifiedUuid = uuid.replace(/-/g, "");
   const spendAt = dayjs(req.spend_at).toDate();
-  return await db.bill.create({
-    data: {
-      identifier: simplifiedUuid,
-      title: req.title,
-      moneyFen: req.money_fen,
-      budgetIdf: req.root_budget_idf,
-      inOrOut: req.in_or_out,
-      flowStatus: req.flow_status,
-      payType: req.pay_type,
-      payDetail: req.pay_detail,
-      counterparty: req.counterparty,
-      orderId: req.order_id,
-      productInfo: req.product_info,
-      sourceRaw: req.source_raw,
-      remark: req.remark,
-      spendAt,
-      isDeleted: false, // Add this line
-      createdAt: new Date(), // Add this line
-    },
-  });
+  let bill = null;
+  if (req.identifier) {
+    bill = await db.bill.findUnique({
+      where: {
+        identifier: req.identifier,
+      },
+    });
+  }
+  if (bill) {
+    return await db.bill.update({
+      where: {
+        identifier: req.identifier,
+      },
+      data: {
+        title: req.title,
+        money_fen: req.money_fen,
+        budget_idf: req.budget_idf,
+        user_idf: req.user_idf,
+        in_or_out: req.in_or_out,
+        flow_status: req.flow_status,
+        pay_type: req.pay_type,
+        pay_detail: req.pay_detail,
+        counterparty: req.counterparty,
+        order_id: req.order_id,
+        product_info: req.product_info,
+        source_raw: req.source_raw,
+        remark: req.remark,
+        spend_at: spendAt,
+        created_at: new Date(), // Add this line
+      },
+    });
+  } else {
+    return await db.bill.create({
+      data: {
+        identifier: simplifiedUuid,
+        title: req.title,
+        money_fen: req.money_fen,
+        user_idf: req.user_idf,
+        budget_idf: req.budget_idf,
+        in_or_out: req.in_or_out,
+        flow_status: req.flow_status,
+        pay_type: req.pay_type,
+        pay_detail: req.pay_detail,
+        counterparty: req.counterparty,
+        order_id: req.order_id,
+        product_info: req.product_info,
+        source_raw: req.source_raw,
+        remark: req.remark,
+        spend_at: spendAt,
+        is_deleted: false, // Add this line
+        created_at: new Date(), // Add this line
+      },
+    });
+  }
 }
 
-export async function queryBillByOption(
-  opt: QueryBillPayload
-): Promise<PageResponse<Bill>> {
+export async function queryBillByOption(opt: QueryBillPayload) {
   const db = getDB();
   const page = sql_page_option(opt.page ?? { page: 1, pageSize: 10 });
   const bills = await db.bill.findMany({
     where: {
-      identifier: {
-        in: opt.identifiers,
-      },
+      ...(opt.identifiers && {
+        identifier: {
+          in: opt.identifiers,
+        },
+      }),
     },
     ...page,
   });
   const pageTotal = await db.bill.count({
     where: {
-      identifier: {
-        in: opt.identifiers,
-      },
+      ...(opt.identifiers && {
+        identifier: {
+          in: opt.identifiers,
+        },
+      }),
     },
   });
   return {
     data: bills,
     total_page: pageTotal,
     page_size: page.take,
-    cur_page: opt.page.page ?? 1,
+    cur_page: opt.page.page || 1,
   };
 }
 
@@ -167,7 +199,7 @@ export async function deleteBillByIdentifiers(
       },
     },
     data: {
-      isDeleted: true,
+      is_deleted: true,
     },
   });
   return payload.count;

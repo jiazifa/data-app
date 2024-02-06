@@ -45,6 +45,9 @@ export function FlowTable({ data, onDeleteAction, onEditAction, onPassAction }: 
     if (budgetListError) {
         return <Badge color="red">预算列表加载失败</Badge>;
     }
+    console.log(`budgetList: ${JSON.stringify(budgetList)}`);
+    console.log(`userList: ${JSON.stringify(userList)}`);
+    console.log(`data: ${JSON.stringify(data)}`);
     const budgetListData = budgetList?.data ?? [];
     //should be memoized or stable
     const rows = data.map((item) => {
@@ -53,7 +56,7 @@ export function FlowTable({ data, onDeleteAction, onEditAction, onPassAction }: 
         const yuan = (fen / 100).toFixed(2);
         let budgetTitle = '';
         const budget = budgetListData.find(budget => budget.identifier === item.budget_idf);
-        const rootBudget = budgetListData.find(b => b.identifier === budget?.parentIdf);
+        const rootBudget = budgetListData.find(b => b.identifier === budget?.parent_idf);
         if (!rootBudget) {
             budgetTitle = `${budget?.title ?? ''}`
         } else {
@@ -72,7 +75,7 @@ export function FlowTable({ data, onDeleteAction, onEditAction, onPassAction }: 
                 </Table.Td>
                 <Table.Td>
                     <Text fz="sm">
-                        {userList?.data.find(user => user.identifier === item.user_idf)?.userName}
+                        {userList?.data.find(user => user.identifier === item.user_idf)?.user_name}
                     </Text>
                 </Table.Td>
 

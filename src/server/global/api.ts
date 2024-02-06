@@ -1,7 +1,6 @@
 export const GETFetcher = async <Data>(url: string) => {
   const response = await fetch(url, {
     method: "GET",
-    headers: getDefaultHeaders(),
   });
   const data: any = await response.json();
   return data.data as Data;
@@ -16,6 +15,7 @@ export const POSTFetcher = async <Data>(url: string, body?: any) => {
     body: JSON.stringify(body ?? {}),
   });
   const data = await response.json();
+  console.log(`POSTFetcher: ${url}, ${JSON.stringify(data.data)}`);
   return data.data as Data;
 };
 

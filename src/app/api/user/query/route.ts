@@ -12,15 +12,13 @@ async function handler(req: NextRequest) {
   const data: QueryUserOptions = json.payload;
   console.log(`[api/user/query] data: ${JSON.stringify(data)}`);
   const newUsers = await queryUserByOptions(data);
-  const resp = NextResponse.json(
+  return NextResponse.json(
     {
       data: newUsers,
       code: 200,
     },
     { status: 200 }
   );
-  console.log(`[api/user/query] resp: ${JSON.stringify(resp)}`);
-  return resp;
 }
 
 export { handler as POST };

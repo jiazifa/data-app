@@ -24,13 +24,13 @@ export default function UserDetailPage() {
             <PageContainer title='用户详情'>
                 <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
                     <Avatar
-                        src={user?.userName}
+                        src={user?.user_name}
                         size={120}
                         radius={120}
                         mx="auto"
                     />
                     <Text ta="center" fz="lg" fw={500} mt="md">
-                        {user?.userName}
+                        {user?.user_name}
                     </Text>
                     <Text ta="center" c="dimmed" fz="sm">
                         {user?.email ?? "暂无邮箱"} • {user?.phone ?? "暂无手机号"}

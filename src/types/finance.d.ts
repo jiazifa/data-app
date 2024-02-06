@@ -3,7 +3,7 @@ import { PageRequest } from ".";
 export type CreateOrUpdateBudgetReq = {
   identifier?: string;
   title: string;
-  parentIdf?: string;
+  parent_idf?: string;
   remark?: string;
 };
 
@@ -33,9 +33,9 @@ export interface CreateOrUpdateFlowReq {
 export interface Budget {
   identifier: string; // 唯一标识
   title: string;
-  parentIdf?: string; // 父级唯一标识
+  parent_idf?: string; // 父级唯一标识
   remark?: string;
-  createdAt: Date; // 创建时间
+  created_at: Date; // 创建时间
 }
 
 export enum FlowInOrOut {

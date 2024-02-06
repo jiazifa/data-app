@@ -7,18 +7,19 @@ import { FlowTable } from "@/components/Table/FlowTable";
 import { createFlow, update_flow, useFlowList } from "@/server/finance";
 import { FlowStatus, QueryFlowPayload, CreateOrUpdateFlowReq } from "@/types";
 import { FlowStatusMapTitle } from "@/types/models";
-import { Button, Group, JsonInput, MultiSelect, Pagination } from "@mantine/core";
+import { Button, Group, MultiSelect, Pagination } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useState } from "react";
 
 const FlowListPage = () => {
     const [activePage, setPage] = useState(1);
-    const [flowOptions, setFlowOptions] = useState<QueryFlowPayload>({});
-    const { data: flowList, error: flowError, mutate: flowMutate } = useFlowList(flowOptions, { page: activePage, pageSize: 20 });
+    const [flowOptions, setFlowOptions] = useState<QueryFlowPayload>({ page: { page: activePage, pageSize: 20 } });
+    const { data: flowList, error: flowError, mutate: flowMutate } = useFlowList(flowOptions);
     if (flowError) {
         console.log(`获得账单列表失败: ${flowError}`);
+    } else {
+        console.log(`获得账单列表: ${flowList}`);
     }
-    console.log(`获得账单列表: ${flowList}`);
     if (flowList) {
         console.log(`获得账单列表成功: ${flowList}`);
     }
@@ -73,7 +74,9 @@ const FlowListPage = () => {
                             },
                         ]}
                         onChange={(values) => {
-                            let options: QueryFlowPayload = {};
+                            let options: QueryFlowPayload = {
+                                page: { page: activePage, pageSize: 20 },
+                            };
                             values.forEach((value) => {
                                 if (value === FlowStatus.UNCHECKED) {
                                     options.flow_status = FlowStatus.UNCHECKED;
@@ -139,7 +142,7 @@ const FlowListPage = () => {
                         withControls
                         value={activePage}
                         onChange={setPage}
-                        total={flowList?.total_page ?? 10}
+                        total={flowList?.total_page ?? 1}
                     />
                 </Group>
             </PageContainer>
