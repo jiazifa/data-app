@@ -208,7 +208,7 @@ const update_budget = async (budget: CreateOrUpdateBudgetReq): Promise<Budget> =
 };
 
 const delete_budget = async (identifiers: Array<string>): Promise<void> => {
-    const payload = identifiers.map((item) => ({ identifier: item }));
+    const payload = { "identifiers": identifiers }
     return POSTFetcher("/api/finance/category/delete", { payload: payload });
 }
 

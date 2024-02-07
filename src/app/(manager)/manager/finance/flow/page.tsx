@@ -142,7 +142,7 @@ const FlowListPage = () => {
                         withControls
                         value={activePage}
                         onChange={setPage}
-                        total={flowList?.total_page ?? 1}
+                        total={flowList?.total_page || 1}
                     />
                 </Group>
             </PageContainer>

@@ -118,7 +118,7 @@ export async function createOrUpdateBill(req: CreateOrUpdateFlowReq) {
       data: {
         title: req.title,
         money_fen: req.money_fen,
-        budget_idf: req.budget_idf,
+        budget_idf: req.budget_idf || req.root_budget_idf,
         user_idf: req.user_idf,
         in_or_out: req.in_or_out,
         flow_status: req.flow_status,
@@ -140,7 +140,7 @@ export async function createOrUpdateBill(req: CreateOrUpdateFlowReq) {
         title: req.title,
         money_fen: req.money_fen,
         user_idf: req.user_idf,
-        budget_idf: req.budget_idf,
+        budget_idf: req.budget_idf || req.root_budget_idf,
         in_or_out: req.in_or_out,
         flow_status: req.flow_status,
         pay_type: req.pay_type,

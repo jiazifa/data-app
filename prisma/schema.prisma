@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Category {
+model category {
   id         Int      @id @default(autoincrement())
   identifier String   @unique
   title      String
@@ -22,7 +22,7 @@ model Category {
   @@index([id, title])
 }
 
-model User {
+model user {
   // 用户id
   id Int @id @default(autoincrement())
 
@@ -45,7 +45,7 @@ model User {
   updated_at DateTime @updatedAt
 }
 
-model Bill {
+model bill {
   id         Int    @id @default(autoincrement())
   identifier String @unique // 用于标识账单的唯一标识符
   title      String // 账单标题

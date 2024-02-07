@@ -9,6 +9,7 @@ const handler = async (req: NextRequest) => {
     )}`
   );
   const dbReq = (await req.json()).payload as CreateOrUpdateFlowReq;
+  console.log(`[api/finance/bill/add] data: ${JSON.stringify(dbReq)}`);
   const entity = await createOrUpdateBill(dbReq);
   return NextResponse.json(
     {
