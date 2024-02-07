@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5001:3000"
+    volumes:
+      - ../data:/app/data
+    networks:
+      - rss_network
+
+networks:
+  my_network

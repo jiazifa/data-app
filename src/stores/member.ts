@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { User } from "@/types/models";
+import { User } from "@/types";
 
 export interface MemberDataState {
   entities: {
